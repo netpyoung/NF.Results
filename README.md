@@ -1,8 +1,9 @@
 ![NF.Results](https://raw.githubusercontent.com/netpyoung/NF.Results/master/icon/Icon.png)
 
-NF.Results is a robust option/maybe type for C#.
+NF.Results contains rust likes option/result type for C#.
 
-Version: 1.0.0
+* Version: 1.0.0
+* https://www.nuget.org/packages/NF.Results
 
 ## What's this?
 I want to use `Result`, `Option` type likes rust.
