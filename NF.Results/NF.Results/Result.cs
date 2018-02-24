@@ -24,18 +24,18 @@ namespace NF.Results
         {
             return new Result<TErr, TErr>(err, err, false);
         }
-        
+
         public static Option<Result<TOk, TErr>> Transpose<TOk, TErr>(this Result<Option<TOk>, TErr> self)
         {
             if (!self.IsOk)
             {
-                return Option.Some(Result.Err<TOk, TErr>(self.UnwrapErr()));
+                return Option.Some(Err<TOk, TErr>(self.UnwrapErr()));
             }
 
             Option<TOk> opt = self.Unwrap();
             if (opt.IsSome)
             {
-                return Option.Some(Result.Ok<TOk, TErr>(opt.Unwrap()));
+                return Option.Some(Ok<TOk, TErr>(opt.Unwrap()));
             }
 
             return Option.None<Result<TOk, TErr>>();
@@ -188,20 +188,20 @@ namespace NF.Results
             }
 
             return this._ok.Equals(value);
-
         }
 
         public Option<TOk> Ok()
         {
             return this.IsOk ? Option.Some(this._ok) : Option.None<TOk>();
         }
-        
+
         public Option<TErr> Err()
         {
             return this.IsOk ? Option.None<TErr>() : Option.Some(this._err);
         }
-        
-        public Result<TResult, TErr> Match<TResult>(Func<TOk, Result<TResult, TErr>> ok, Func<TErr, Result<TResult, TErr>> err)
+
+        public Result<TResult, TErr> Match<TResult>(Func<TOk, Result<TResult, TErr>> ok,
+            Func<TErr, Result<TResult, TErr>> err)
         {
             if (ok == null)
             {
@@ -215,7 +215,7 @@ namespace NF.Results
 
             return this.IsOk ? ok(this._ok) : err(this._err);
         }
-        
+
         public Result<TResult, TErr> Map<TResult>(Func<TOk, TResult> f)
         {
             if (f == null)
@@ -228,7 +228,7 @@ namespace NF.Results
                 err => Result.Err<TResult, TErr>(err)
             );
         }
-        
+
         public Result<TOk, TResult> MapErr<TResult>(Func<TErr, TResult> f)
         {
             if (f == null)
@@ -243,7 +243,7 @@ namespace NF.Results
 
             return Result.Err<TOk, TResult>(f(this._err));
         }
-        
+
         public IEnumerable<Option<TOk>> ToEnumerable()
         {
             if (this.IsOk)
@@ -267,7 +267,7 @@ namespace NF.Results
                 yield return Option.None<TOk>();
             }
         }
-        
+
         public Result<TResult, TErr> And<TResult>(Result<TResult, TErr> o)
         {
             if (this.IsOk)
@@ -277,7 +277,7 @@ namespace NF.Results
 
             return Result.Err<TResult, TErr>(this._err);
         }
-        
+
         public Result<TResult, TErr> AndThen<TResult>(Func<TOk, Result<TResult, TErr>> f)
         {
             if (this.IsOk)
@@ -287,7 +287,7 @@ namespace NF.Results
 
             return Result.Err<TResult, TErr>(this._err);
         }
-        
+
         public Result<TOk, TErr> Or(Result<TOk, TErr> o)
         {
             if (this.IsErr)
@@ -297,7 +297,7 @@ namespace NF.Results
 
             return Result.Ok<TOk, TErr>(this._ok);
         }
-        
+
         public Result<TErr, TErr> OrElse(Func<TErr, Result<TErr, TErr>> f)
         {
             if (this.IsErr)
@@ -305,9 +305,9 @@ namespace NF.Results
                 return f(this._err);
             }
 
-            return Result.Ok<TErr, TErr>((TErr)(object)this._ok);
+            return Result.Ok<TErr, TErr>((TErr) (object) this._ok);
         }
-        
+
         public TOk Expect(string message)
         {
             if (this.IsOk)
@@ -334,10 +334,10 @@ namespace NF.Results
             {
                 return this._ok;
             }
-            
+
             throw new UnwrapException(this.ToString());
         }
-        
+
         public TOk UnwrapOr(TOk val)
         {
             if (this.IsOk)
@@ -347,7 +347,7 @@ namespace NF.Results
 
             return val;
         }
-        
+
         public TOk UnwrapOrDefault()
         {
             if (this.IsOk)
@@ -357,15 +357,15 @@ namespace NF.Results
 
             return default(TOk);
         }
-        
+
         public TOk UnwrapOrElse(Func<TErr, TOk> f)
         {
             if (this.IsOk)
             {
                 return this._ok;
             }
-            
-            return f != null ? f(this._err) : default(TOk); 
+
+            return f != null ? f(this._err) : default(TOk);
         }
 
         public TErr UnwrapErr()

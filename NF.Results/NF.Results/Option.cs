@@ -14,19 +14,20 @@ namespace NF.Results
         {
             return new Option<T>(default(T), false);
         }
-        
+
         public static Result<Option<TOk>, TErr> Transpose<TOk, TErr>(this Option<Result<TOk, TErr>> self)
         {
             if (!self.IsSome)
             {
-                return Result.Ok<Option<TOk>, TErr>(Option.None<TOk>());
+                return Result.Ok<Option<TOk>, TErr>(None<TOk>());
             }
 
             Result<TOk, TErr> result = self.Unwrap();
             if (result.IsOk)
             {
-                return Result.Ok<Option<TOk>, TErr>(Option.Some(result.Unwrap()));
+                return Result.Ok<Option<TOk>, TErr>(Some(result.Unwrap()));
             }
+
             return Result.Err<Option<TOk>, TErr>(result.UnwrapErr());
         }
     }
@@ -385,7 +386,7 @@ namespace NF.Results
 
             return $"Some({this._value})";
         }
-        
+
         public T Unwrap()
         {
             if (this.IsSome)
@@ -395,7 +396,7 @@ namespace NF.Results
 
             throw new UnwrapException(this.ToString());
         }
-        
+
         public T UnwrapOrDefault()
         {
             if (this.IsSome)
@@ -405,7 +406,7 @@ namespace NF.Results
 
             return default(T);
         }
-        
+
         public T UnwrapOrElse(T val)
         {
             if (this.IsSome)
@@ -415,7 +416,7 @@ namespace NF.Results
 
             return val;
         }
-        
+
         public T UnwrapOrElse(Func<T> f)
         {
             if (this.IsSome)

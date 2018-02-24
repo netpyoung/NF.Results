@@ -4,7 +4,7 @@ namespace NF.Results
 {
     // ref: https://docs.microsoft.com/en-us/dotnet/standard/exceptions/best-practices-for-exceptions
     // ref: https://blog.gurock.com/articles/creating-custom-exceptions-in-dotnet/
-    
+
     [Serializable]
     public class UnExpectedException : Exception
     {
@@ -12,7 +12,7 @@ namespace NF.Results
         {
         }
     }
-    
+
     [Serializable]
     public class ArgumentNullException : Exception
     {
@@ -20,7 +20,7 @@ namespace NF.Results
         {
         }
     }
-    
+
     [Serializable]
     public class UnwrapException : Exception
     {

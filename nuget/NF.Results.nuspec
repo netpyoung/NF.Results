@@ -12,5 +12,10 @@
     <description>NF.Results contains rust likes option/result type for C#.</description>
     <copyright>Copyright 2018</copyright>
     <tags>Option Some None Result Ok Err</tags>
+    <dependencies>
+    </dependencies>
   </metadata>
+  <files>
+      <file src="NF.Results.dll" target="lib/net46" />
+  </files>
 </package>
