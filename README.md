@@ -1,4 +1,4 @@
-![NF.Results](https://raw.githubusercontent.com/netpyoung/NF.Results/master/icon/Logo.png)
+![NF.Results](https://raw.githubusercontent.com/netpyoung/NF.Results/master/icon/Icon.png)
 
 NF.Results is a robust option/maybe type for C#.
 
