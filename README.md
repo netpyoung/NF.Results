@@ -2,8 +2,8 @@
 
 NF.Results contains rust likes option/result type for C#.
 
-* Version: 1.0.0
-* https://www.nuget.org/packages/NF.Results
+* src Version: 1.0.1
+* nuget 1.0.0 : https://www.nuget.org/packages/NF.Results
 
 ## What's this?
 I want to use `Result`, `Option` type likes rust.

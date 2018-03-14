@@ -15,6 +15,12 @@ namespace ConsolePlayground
             Console.WriteLine(opt);
             Console.WriteLine(trans);
             Console.WriteLine(trans.Transpose());
+            Hello a = new Hello();
+            var option = a.ToOption();
+            Console.WriteLine(option);
+
+            var ok = a.ToOk<Hello, int>();
+            Console.WriteLine(ok.Ok());
         }
         
         public static void Main2(string[] args)

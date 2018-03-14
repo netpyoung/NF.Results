@@ -24,21 +24,44 @@ namespace NF.Results
         {
             return new Result<TErr, TErr>(err, err, false);
         }
+    }
 
+    public static class ExResult
+    {
         public static Option<Result<TOk, TErr>> Transpose<TOk, TErr>(this Result<Option<TOk>, TErr> self)
         {
             if (!self.IsOk)
             {
-                return Option.Some(Err<TOk, TErr>(self.UnwrapErr()));
+                return Option.Some(Result.Err<TOk, TErr>(self.UnwrapErr()));
             }
 
             Option<TOk> opt = self.Unwrap();
             if (opt.IsSome)
             {
-                return Option.Some(Ok<TOk, TErr>(opt.Unwrap()));
+                return Option.Some(Result.Ok<TOk, TErr>(opt.Unwrap()));
             }
 
             return Option.None<Result<TOk, TErr>>();
+        }
+
+        public static Result<TOk, TErr> ToOk<TOk, TErr>(this TOk val)
+        {
+            return Result.Ok<TOk, TErr>(val);
+        }
+
+        public static Result<TOk, TErr> ToErr<TOk, TErr>(this TErr err)
+        {
+            return Result.Err<TOk, TErr>(err);
+        }
+
+        public static Option<TOk> Ok<TOk, TErr>(this Result<TOk, TErr> result)
+        {
+            return result.IsOk ? Option.Some(result._ok) : Option.None<TOk>();
+        }
+
+        public static Option<TErr> Err<TOk, TErr>(this Result<TOk, TErr> result)
+        {
+            return result.IsOk ? Option.None<TErr>() : Option.Some(result._err);
         }
     }
 
@@ -46,6 +69,9 @@ namespace NF.Results
     {
         public bool IsOk { get; }
         public bool IsErr => !this.IsOk;
+
+        public TOk Ok => this.Unwrap();
+        public TErr Err => this.UnwrapErr();
 
         internal TOk _ok;
 
@@ -188,16 +214,6 @@ namespace NF.Results
             }
 
             return this._ok.Equals(value);
-        }
-
-        public Option<TOk> Ok()
-        {
-            return this.IsOk ? Option.Some(this._ok) : Option.None<TOk>();
-        }
-
-        public Option<TErr> Err()
-        {
-            return this.IsOk ? Option.None<TErr>() : Option.Some(this._err);
         }
 
         public Result<TResult, TErr> Match<TResult>(Func<TOk, Result<TResult, TErr>> ok,
