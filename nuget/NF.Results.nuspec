@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>NF.Results</id>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <title>NF.Results: rust likes option/result type</title>
     <authors>Eunpyoung Kim</authors>
     <owners>Eunpyoung Kim</owners>

@@ -2,8 +2,7 @@
 
 NF.Results contains rust likes option/result type for C#.
 
-* src Version: 1.0.1
-* nuget 1.0.0 : https://www.nuget.org/packages/NF.Results
+* Version: 1.0.1
 
 ## What's this?
 I want to use `Result`, `Option` type likes rust.
@@ -14,7 +13,7 @@ but, It's not suitable for me. so I written this code.
 * `nuget install NF.Results`
 
 ## Example
-* https://github.com/netpyoung/NF.Results/blob/master/NF.Results/ConsolePlayground/Program.cs
+* https://github.com/netpyoung/NF.Results/blob/master/NF.Results/NF.Results.Tests/Tests.cs
 
 ## Ref.
 * https://doc.rust-lang.org/std/option/enum.Option.html
