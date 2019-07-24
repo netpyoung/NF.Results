@@ -1,8 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace NF.Results
+﻿namespace NF.Results.Result
 {
+    using System;
+    using System.Collections.Generic;
+    using NF.Results.Exceptions;
+    using NF.Results.Option;
+    using ArgumentNullException = Exceptions.ArgumentNullException;
+
     public static class Result
     {
         public static Result<TOk, TErr> Ok<TOk, TErr>(TOk ok)
@@ -15,14 +18,14 @@ namespace NF.Results
             return new Result<TOk, TErr>(default(TOk), err, false);
         }
 
-        public static Result<TOk, TOk> Ok<TOk>(TOk ok)
+        public static OptionOk<TOk> Ok<TOk>(TOk ok)
         {
-            return new Result<TOk, TOk>(ok, ok, true);
+            return new OptionOk<TOk>(ok);
         }
 
-        public static Result<TErr, TErr> Err<TErr>(TErr err)
+        public static OptionErr<TErr> Err<TErr>(TErr err)
         {
-            return new Result<TErr, TErr>(err, err, false);
+            return new OptionErr<TErr>(err);
         }
     }
 
@@ -132,6 +135,16 @@ namespace NF.Results
             return left.CompareTo(right) >= 0;
         }
 
+        public static implicit operator Result<TOk, TErr>(OptionOk<TOk> tag)
+        {
+            return Result.Ok<TOk, TErr>(tag.Value);
+        }
+
+        public static implicit operator Result<TOk, TErr>(OptionErr<TErr> tag)
+        {
+            return Result.Err<TOk, TErr>(tag.Value);
+        }
+
         public override string ToString()
         {
             if (this.IsOk)
@@ -229,7 +242,7 @@ namespace NF.Results
             }
             else
             {
-                yield return Option.None<TOk>();
+                yield return Option<TOk>.None;
             }
         }
 
@@ -241,7 +254,7 @@ namespace NF.Results
             }
             else
             {
-                yield return Option.None<TOk>();
+                yield return Option<TOk>.None;
             }
         }
 

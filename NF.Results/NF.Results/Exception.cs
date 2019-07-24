@@ -1,7 +1,6 @@
-﻿using System;
-
-namespace NF.Results
+﻿namespace NF.Results.Exceptions
 {
+    using System;
     // ref: https://docs.microsoft.com/en-us/dotnet/standard/exceptions/best-practices-for-exceptions
     // ref: https://blog.gurock.com/articles/creating-custom-exceptions-in-dotnet/
 

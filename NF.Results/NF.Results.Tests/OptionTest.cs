@@ -1,0 +1,64 @@
+﻿#pragma warning disable xUnit2000
+
+namespace NFTest.Results
+{
+    using System;
+    using Xunit;
+    using NF.Results.Option;
+    using NF.Results.Result;
+    using NF.Results.Exceptions;
+
+    public class OptionTest
+    {
+        public class A
+        {
+        }
+
+        public enum E_ERROR
+        {
+            A,
+            B
+        }
+
+        [Fact]
+        public void Test1()
+        {
+            Option<A> opt = Option.Some<A>(null);
+            Assert.Equal(opt, Option.Some<A>(null));
+
+            Assert.Null(opt.Expect("hello"));
+            Exception ex = Assert.Throws<UnExpectedException>(() =>
+                Option<A>.None.Expect("hello")
+            );
+            Assert.Equal("hello", ex.Message);
+        }
+
+        [Fact]
+        public void TestToOption()
+        {
+            Option<int> option = 1.ToOption();
+            Assert.Equal(option.Value, 1);
+        }
+
+        [Fact]
+        public void TestOptionOkErr()
+        {
+            Assert.Equal(10.ToOk(), Option.Some(10));
+            Assert.Equal(10.ToErr(), Option.Some(10));
+        }
+
+        [Fact]
+        public void TestOption()
+        {
+            Option<int> some = Option.Some(10);
+            Assert.True(some.IsSome);
+            Assert.Equal(some.Unwrap(), 10);
+            Assert.Equal(some.Value, 10);
+            Option<int> none = Option<int>.None;
+            Assert.True(none.IsNone);
+            Assert.Throws<UnwrapException>(() =>
+                none.Value
+            );
+        }
+    }
+}

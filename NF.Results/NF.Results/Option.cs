@@ -1,22 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace NF.Results
+﻿namespace NF.Results.Option
 {
-    public static class Option
+    using System;
+    using System.Collections.Generic;
+    using NF.Results.Exceptions;
+    using ArgumentNullException = Exceptions.ArgumentNullException;
+
+    public abstract class Option
     {
+        public abstract bool IsNone { get; }
+
         public static Option<T> Some<T>(T value)
         {
             return new Option<T>(value, true);
         }
-
-        public static Option<T> None<T>()
-        {
-            return new Option<T>(default(T), false);
-        }
+        public static readonly OptionNone None = new OptionNone();
     }
 
-    public struct Option<T> : IEquatable<Option<T>>, IComparable<Option<T>>, ICloneable
+    public class Option<T> : Option, IEquatable<Option<T>>, IComparable<Option<T>>, ICloneable
     {
         private T _value;
 
@@ -28,10 +28,9 @@ namespace NF.Results
 
         public bool IsSome { get; private set; }
 
-        public bool IsNone => !this.IsSome;
+        public override bool IsNone => !this.IsSome;
 
         public T Value => this.Unwrap();
-
 
         public T Expect(string message)
         {
@@ -62,12 +61,12 @@ namespace NF.Results
         {
             if (f == null)
             {
-                return Option.None<TResult>();
+                return Option<TResult>.None;
             }
 
             return this.Match(
                 value => Option.Some(f(value)),
-                Option.None<TResult>
+                () => Option<TResult>.None
             );
         }
 
@@ -97,35 +96,15 @@ namespace NF.Results
             );
         }
 
-        public Result<T, TErr> OkOr<TErr>(TErr err)
-        {
-            if (this.IsSome)
-            {
-                return Result.Ok<T, TErr>(this._value);
-            }
-
-            return Result.Err<T, TErr>(err);
-        }
-
-        public Result<T, TErr> OkOrElse<TErr>(Func<TErr> errFunc)
-        {
-            if (this.IsSome)
-            {
-                return Result.Ok<T, TErr>(this._value);
-            }
-
-            return Result.Err<T, TErr>(errFunc());
-        }
-
         public IEnumerable<Option<T>> ToEnumerable()
         {
             if (this.IsSome)
             {
-                yield return Option.Some(this._value);
+                yield return Some(this._value);
             }
             else
             {
-                yield return Option.None<T>();
+                yield return None;
             }
         }
 
@@ -133,11 +112,11 @@ namespace NF.Results
         {
             if (this.IsSome)
             {
-                yield return Option.Some(this._value);
+                yield return Some(this._value);
             }
             else
             {
-                yield return Option.None<T>();
+                yield return None;
             }
         }
 
@@ -148,20 +127,20 @@ namespace NF.Results
                 return o;
             }
 
-            return Option.None<T>();
+            return None;
         }
 
         public Option<T> AndThen(Func<Option<T>> f)
         {
             if (!this.IsSome)
             {
-                return Option.None<T>();
+                return None;
             }
 
             Option<T> optb = f();
             if (!optb.IsSome)
             {
-                return Option.None<T>();
+                return None;
             }
 
             return optb;
@@ -171,17 +150,17 @@ namespace NF.Results
         {
             if (predicate == null)
             {
-                return Option.None<T>();
+                return None;
             }
 
             if (!this.IsSome)
             {
-                return Option.None<T>();
+                return None;
             }
 
             if (!predicate(this._value))
             {
-                return Option.None<T>();
+                return None;
             }
 
             return this;
@@ -201,7 +180,7 @@ namespace NF.Results
         {
             if (f == null)
             {
-                return Option.None<T>();
+                return None;
             }
 
             if (this.IsSome)
@@ -239,7 +218,7 @@ namespace NF.Results
         {
             if (!this.IsSome)
             {
-                return Option.None<T>();
+                return None;
             }
 
             T v = this._value;
@@ -328,6 +307,7 @@ namespace NF.Results
             return Comparer<T>.Default.Compare(this._value, o._value);
         }
 
+        #region operator Option<T>
         public static bool operator ==(Option<T> left, Option<T> right)
         {
             return left.Equals(right);
@@ -357,6 +337,7 @@ namespace NF.Results
         {
             return left.CompareTo(right) >= 0;
         }
+        #endregion operator Option<T>
 
         public override string ToString()
         {
@@ -411,6 +392,18 @@ namespace NF.Results
             }
 
             return f != null ? f() : default(T);
+        }
+
+        public static Option<T> Some(T value)
+        {
+            return new Option<T>(value, true);
+        }
+
+        public new static readonly Option<T> None = new Option<T>(default(T), false);
+
+        public static implicit operator Option<T>(OptionNone none)
+        {
+            return None;
         }
     }
 }
