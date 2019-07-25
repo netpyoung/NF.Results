@@ -13,7 +13,8 @@ but, It's not suitable for me. so I written this code.
 * `nuget install NF.Results`
 
 ## Example
-* https://github.com/netpyoung/NF.Results/blob/master/NF.Results/NF.Results.Tests/Tests.cs
+* [OptionTest](https://github.com/netpyoung/NF.Results/blob/master/NF.Results/NFTest.Results/OptionTest.cs)
+* [ResultTest](https://github.com/netpyoung/NF.Results/blob/master/NF.Results/NFTest.Results/ResultTest.cs)
 
 ## Ref.
 * https://doc.rust-lang.org/std/option/enum.Option.html

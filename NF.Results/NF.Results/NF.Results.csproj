@@ -2,6 +2,10 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageId>NF.Results</PackageId>
+    <Version>1.0.2</Version>
+    <Authors>netpyoung</Authors>
+    <Company>netpyoung</Company>
   </PropertyGroup>
 
 </Project>
