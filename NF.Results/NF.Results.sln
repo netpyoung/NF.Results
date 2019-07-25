@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NF.Results", "NF.Results\NF.Results.csproj", "{62270874-B017-40FA-AC91-6F51C8784F99}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NF.Results.Tests", "NF.Results.Tests\NF.Results.Tests.csproj", "{C020A91C-0C83-4716-AEF4-03002B29FCF2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NFTest.Results", "NFTest.Results\NFTest.Results.csproj", "{C020A91C-0C83-4716-AEF4-03002B29FCF2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

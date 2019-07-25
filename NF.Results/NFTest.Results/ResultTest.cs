@@ -39,10 +39,14 @@ namespace NFTest.Results
         [Fact]
         public void TestToOk()
         {
-            Result<int, string> result = 1.ToOk();
-            OptionOk<int> ok = result.Ok();
+            Result<int, string> r1 = 1.ToOk();
+            OptionOk<int> ok = r1.Ok();
             Assert.Equal(ok, Result.Ok(1));
             Assert.Equal(ok, Option.Some(1));
+
+            Result<int, string> r2 = Result.Ok(1);
+            Assert.Equal(r1, r2);
+            Assert.Equal(r1, Result.Ok(1));
         }
 
         [Fact]

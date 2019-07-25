@@ -36,8 +36,14 @@ namespace NFTest.Results
         [Fact]
         public void TestToOption()
         {
-            Option<int> option = 1.ToOption();
-            Assert.Equal(option.Value, 1);
+            Option<int> opt1 = 1.ToOption();
+            Assert.Equal(opt1.Value, 1);
+
+            Option<int> opt2 = 1;
+            Assert.Equal(opt2.Value, 1);
+
+            Option<int> opt3 = Option.None;
+            Assert.Equal(opt3.IsNone, true);
         }
 
         [Fact]

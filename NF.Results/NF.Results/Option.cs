@@ -405,5 +405,10 @@
         {
             return None;
         }
+
+        public static implicit operator Option<T>(T v)
+        {
+            return new Option<T>(v, true);
+        }
     }
 }
