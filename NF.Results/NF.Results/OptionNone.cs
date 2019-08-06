@@ -1,16 +1,22 @@
 ﻿namespace NF.Results.Option
 {
-    public sealed class OptionNone : Option
+    public struct OptionNone : IOption
     {
-        public override bool IsNone => true;
-
-        internal OptionNone()
-        {
-        }
+        public bool IsNone => true;
 
         public override bool Equals(object obj)
         {
-            return (obj is OptionNone);
+            if (obj is OptionNone)
+            {
+                return true;
+            }
+
+            if (obj is IOption o)
+            {
+                return o.IsNone;
+            }
+
+            return false;
         }
 
         public override int GetHashCode()

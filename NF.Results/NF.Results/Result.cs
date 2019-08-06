@@ -137,12 +137,12 @@
 
         public static implicit operator Result<TOk, TErr>(OptionOk<TOk> tag)
         {
-            return Result.Ok<TOk, TErr>(tag.Value);
+            return Result.Ok<TOk, TErr>(tag.value);
         }
 
         public static implicit operator Result<TOk, TErr>(OptionErr<TErr> tag)
         {
-            return Result.Err<TOk, TErr>(tag.Value);
+            return Result.Err<TOk, TErr>(tag.value);
         }
 
         public override string ToString()
