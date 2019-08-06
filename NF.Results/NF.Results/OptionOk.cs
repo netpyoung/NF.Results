@@ -1,13 +1,14 @@
 ﻿namespace NF.Results.Option
 {
-    public sealed class OptionOk<TOk> : Option<TOk>
+    public struct OptionOk<TOk> : IOption
     {
-        internal OptionOk(TOk value) : base(value, true)
-        {
-        }
+        public bool IsNone => false;
 
-        internal OptionOk() : base(default(TOk), false)
+        readonly internal TOk value;
+
+        internal OptionOk(TOk value)
         {
+            this.value = value;
         }
 
         public override bool Equals(object obj)

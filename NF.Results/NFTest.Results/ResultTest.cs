@@ -32,8 +32,20 @@ namespace NFTest.Results
             Result<int, E_ERROR> result = Result.Ok<int, E_ERROR>(10);
             Assert.Equal(result.Ok(), Option.Some(10));
             Assert.Equal(result.Ok, 10);
+            Assert.Equal(result.Err(), Option.None);
+        }
 
-            Assert.Equal(result.Err(), Option<E_ERROR>.None);
+        [Fact]
+        public void Test3()
+        {
+            OptionErr<E_ERROR> err = new OptionErr<E_ERROR>();
+            Assert.Equal(err.IsNone, true);
+            Assert.Equal(Option<E_ERROR>.None, new OptionErr<E_ERROR>());
+            Assert.Equal(new OptionErr<E_ERROR>(), Option<E_ERROR>.None);
+            Assert.Equal(new OptionErr<E_ERROR>(), Option.None);
+            
+            Assert.Equal(Option.None, new OptionErr<E_ERROR>());
+            Assert.Equal(Option.None, Option<E_ERROR>.None);
         }
 
         [Fact]

@@ -5,10 +5,13 @@
     using NF.Results.Exceptions;
     using ArgumentNullException = Exceptions.ArgumentNullException;
 
-    public abstract class Option
+    public interface IOption
     {
-        public abstract bool IsNone { get; }
+        bool IsNone { get; }
+    }
 
+    public struct Option
+    {
         public static Option<T> Some<T>(T value)
         {
             return new Option<T>(value, true);
@@ -16,7 +19,7 @@
         public static readonly OptionNone None = new OptionNone();
     }
 
-    public class Option<T> : Option, IEquatable<Option<T>>, IComparable<Option<T>>, ICloneable
+    public struct Option<T> : IOption, IEquatable<Option<T>>, IComparable<Option<T>>, ICloneable
     {
         private T _value;
 
@@ -28,7 +31,7 @@
 
         public bool IsSome { get; private set; }
 
-        public override bool IsNone => !this.IsSome;
+        public bool IsNone => !this.IsSome;
 
         public T Value => this.Unwrap();
 
@@ -65,7 +68,7 @@
             }
 
             return this.Match(
-                value => Option.Some(f(value)),
+                value => Option<TResult>.Some(f(value)),
                 () => Option<TResult>.None
             );
         }
@@ -173,7 +176,7 @@
                 return this;
             }
 
-            return Option.Some(alternative);
+            return Option<T>.Some(alternative);
         }
 
         public Option<T> OrElse(Func<T> f)
@@ -188,7 +191,7 @@
                 return this;
             }
 
-            return Option.Some(f());
+            return Option<T>.Some(f());
         }
 
         public T GetOrInsert(T v)
@@ -224,7 +227,7 @@
             T v = this._value;
             this._value = default(T);
             this.IsSome = false;
-            return Option.Some(v);
+            return Option<T>.Some(v);
         }
 
         public object Clone()
@@ -274,6 +277,11 @@
 
         public override bool Equals(object obj)
         {
+            if (obj is IOption o)
+            {
+                return (IsNone == o.IsNone);
+            }
+
             return obj is Option<T> && this.Equals((Option<T>) obj);
         }
 
@@ -399,11 +407,25 @@
             return new Option<T>(value, true);
         }
 
-        public new static readonly Option<T> None = new Option<T>(default(T), false);
+        public static readonly Option<T> None = Option.None;
 
         public static implicit operator Option<T>(OptionNone none)
         {
-            return None;
+            return new Option<T>(default(T), false);
+        }
+
+        public static implicit operator Option<T>(OptionOk<T> ok)
+        {
+            return Option.Some(ok.value);
+        }
+
+        public static implicit operator Option<T>(OptionErr<T> err)
+        {
+            if (err.IsNone)
+            {
+                return None;
+            }
+            return Option.Some(err.value);
         }
 
         public static implicit operator Option<T>(T v)
